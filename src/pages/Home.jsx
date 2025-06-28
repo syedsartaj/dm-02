@@ -21,7 +21,7 @@ const dummyPosts = Array.from({ length: 6 }, (_, i) => ({
   image: 'https://i.postimg.cc/g03h3n2B/img.jpg',
 }));
 
-const BlogList = () => {
+const Home = () => {
   const [allPosts, setAllPosts] = useState([]);
 
   useEffect(() => {
@@ -39,4 +39,4 @@ const BlogList = () => {
   );
 }
 
-export default BlogList;
+export default Home;
