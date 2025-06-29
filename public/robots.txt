@@ -1,3 +1,13 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+
+# Optional: Disallow private routes
+Disallow: /admin
+Disallow: /dashboard
+
+# Blog base route
+Allow: /BlogList
+Allow: /BlogList?id=
+
+# Sitemap URL (must match your deployed domain)
+Sitemap: https://yourdomain.com/sitemap.xml

@@ -1,42 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Bottom from '../components/Bottom';
 import Header from '../components/Header';
 import Carousel from '../components/Carousel';
-
-const categories = [
-  'PC Updates',
-  'Technology Updates',
-  'Gadgets World',
-  'Marketing Strategies',
-  'Start Ups & Apps',
-  'Artificial Intelligence',
-  'Recent Updates'
-];
-
-const dummyPosts = Array.from({ length: 6 }, (_, i) => ({
-  title: `Sample Blog Post ${i + 1}`,
-  date: '2025-06-27',
-  author: 'Sartaj',
-  excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  image: 'https://i.postimg.cc/g03h3n2B/img.jpg',
-}));
+import { useData } from '../DataContext'; // using the global context
 
 const Home = () => {
-  const [allPosts, setAllPosts] = useState([]);
+  const { sheetData, loading } = useData(); // get data and loading state from context
 
-  useEffect(() => {
-    setAllPosts(dummyPosts);
-  }, []);
+  // Extract unique categories from the sheet
+  const categories = Array.from(
+    new Set(sheetData.map(post => post.category?.trim()).filter(Boolean))
+  );
 
   return (
     <div className="bg-gray-100 text-gray-900 min-h-screen">
-      <Header/>
-      {categories.map((cat, idx) => (
-        <Carousel key={idx} title={cat} posts={allPosts} />
-      ))}
-      <Bottom/>
+      <Header />
+
+      {loading ? (
+        <div className="text-center py-10 font-semibold text-lg">Loading blog posts...</div>
+      ) : (
+        categories.map((cat, idx) => {
+          const postsForCategory = sheetData.filter(
+            post => post.category?.trim() === cat
+          );
+
+          return (
+            <Carousel key={idx} title={cat} posts={postsForCategory} />
+          );
+        })
+      )}
+
+      <Bottom />
     </div>
   );
-}
+};
 
 export default Home;
