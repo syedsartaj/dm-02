@@ -1,9 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css'; 
 import 'slick-carousel/slick/slick-theme.css';
 
 const Carousel = ({ title, posts }) => {
+  const navigate = useNavigate();
+
   const settings = {
     dots: true,
     infinite: true,
@@ -17,8 +20,17 @@ const Carousel = ({ title, posts }) => {
     ]
   };
 
+  const handleCardClick = (post) => {
+    const id = post.id || post.link; // fallback depending on your data
+    if (id) navigate(`/blogpage?id=${encodeURIComponent(id)}`);
+  };
+
   const renderCard = (post, idx) => (
-    <div key={idx} className="w-[300px] bg-white rounded-lg shadow-md p-4 text-center transition-transform duration-200 hover:-translate-y-1">
+    <div
+      key={idx}
+      onClick={() => handleCardClick(post)}
+      className="cursor-pointer w-[300px] bg-white rounded-lg shadow-md p-4 text-center transition-transform duration-200 hover:-translate-y-1"
+    >
       <img src={post.image_url} alt={post.title} className="w-full h-40 object-cover rounded mb-2" />
       <h3 className="text-lg font-semibold text-gray-800">{post.title}</h3>
       <p className="text-sm text-gray-500 mb-2">

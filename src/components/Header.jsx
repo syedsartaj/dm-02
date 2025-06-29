@@ -1,24 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useData } from '../DataContext'; // using the global context
 
-const primaryLinks = [
+const Header = () => {
+    const { sheetData, loading } = useData(); // get data and loading state from context
+  const primaryLinks = [
   { label: 'About Us', path: '/about' },
   { label: 'Contact', path: '/contactus' },
   { label: 'Advertise', path: '/contact' },
   { label: 'Blogs', path: '/BlogList' }
 ];
 
-const categories = [
-  'PC Updates',
-  'Technology Updates',
-  'Gadgets World',
-  'Marketing Strategies',
-  'Start Ups & Apps',
-  'Artificial Intelligence',
-  'Recent Updates'
-];
+  const categories = Array.from(
+    new Set(sheetData.map(post => post.category?.trim()).filter(Boolean))
+  );
 
-const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -30,7 +26,7 @@ const Header = () => {
 const handleCategoryClick = (category) => {
   const formattedCategory = category.replace(/\s+/g, '-');
   setMenuOpen(false);
-  navigate(`/BlogList?id=${encodeURIComponent(formattedCategory)}`);
+  navigate(`/BlogList?cat=${encodeURIComponent(formattedCategory)}`);
 };
 
   return (
