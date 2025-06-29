@@ -5,6 +5,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 const Carousel = ({ title, posts }) => {
+    const [isMobile, setIsMobile] = React.useState(window.innerWidth < 640); // Tailwind's sm breakpoint
+
   const navigate = useNavigate();
 
   const settings = {
@@ -24,6 +26,7 @@ const Carousel = ({ title, posts }) => {
     const id = post.id || post.link; // fallback depending on your data
     if (id) navigate(`/blogpage?id=${encodeURIComponent(id)}`);
   };
+  const shouldUseCarousel = isMobile ? posts.length >= 2 : posts.length >= 4;
 
   const renderCard = (post, idx) => (
     <div
@@ -44,7 +47,7 @@ const Carousel = ({ title, posts }) => {
     <section className="max-w-6xl mx-auto my-8 px-4">
       <h2 className="text-2xl font-bold text-blue-800 mb-4">{title}</h2>
 
-      {posts.length >= 4 ? (
+      {shouldUseCarousel? (
         <Slider {...settings}>
           {posts.map(renderCard)}
         </Slider>
