@@ -10,4 +10,4 @@ Allow: /BlogList
 Allow: /BlogList?id=
 
 # Sitemap URL (must match your deployed domain)
-Sitemap: https://yourdomain.com/sitemap.xml
+Sitemap: https://dm-02.vercel.app/sitemap.xml

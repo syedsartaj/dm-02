@@ -1,15 +1,16 @@
-export async function getStaticProps({ res }) {
+// pages/sitemap.xml.js
+export async function getServerSideProps({ res }) {
   const sheetUrl = 'https://opensheet.elk.sh/1AwQWWJTAuf__DsRtL2Ma3BeP5xUh_5N15k5MDki-aUE/Sheet1';
   const response = await fetch(sheetUrl);
   const data = await response.json();
 
-  const domain = 'https://yourdomain.com';
+  const domain = 'https://dm-02.vercel.app/'; // change this to your actual deployed domain
 
   const urls = data.map((item) => {
     const id = item.code_template?.replace(/\s+/g, '-').toLowerCase();
     return `
       <url>
-        <loc>${domain}/BlogList?id=${encodeURIComponent(id)}</loc>
+        <loc>${domain}/blogpage?id=${encodeURIComponent(id)}</loc>
         <lastmod>${item.robottxt_modify_date || item.robottxt_publish_date}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
@@ -31,12 +32,7 @@ export async function getStaticProps({ res }) {
   res.write(sitemap);
   res.end();
 
-  return {
-    props: {},
-
-    // 🕒 Re-generate the sitemap once every 12 hours (optional)
-    revalidate: 43200, // 12 * 60 * 60 seconds
-  };
+  return { props: {} }; // will never be used
 }
 
 export default function Sitemap() {
